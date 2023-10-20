@@ -1,0 +1,83 @@
+.add-playlist-section {
+    margin: 10px 100px 50px 100px;
+  }
+  
+  .playlist-list {
+    margin: 10px 100px;
+  }
+  
+  .add-playlist-form {
+    display: flex;
+  }
+  
+  .empty-list {
+    text-align: center;
+  }
+
+  .search {
+    justify-content: center;
+  }
+  
+  .col-20 {
+    width: 20%;
+  }
+  .missing-title {
+    text-align: center;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  td.playlist-item {
+    padding: 10px;
+    border: 1px solid #ddd;
+  }
+
+  .filter-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+  
+  td.playlist-item input,
+  td.playlist-item select {
+    width: 100%;
+    padding: 5px;
+    margin: 2px 0;
+  }
+  
+  td.playlist-item button {
+    margin: 2px;
+  }
+  
+  .playlist-buttons {
+    text-align: center;
+  }
+  
+  .filter-section {
+    background-color: #9490b1;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .custom-dropdown {
+    position: relative;
+  }
+  
+  ul.show-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    max-height: 150px;
+    overflow-y: auto; 
+  }
+
+  .no-bullets {
+    list-style-type: none;
+  }

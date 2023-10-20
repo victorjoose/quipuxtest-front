@@ -1,0 +1,172 @@
+<app-header></app-header>
+<div class="container">
+    <div class="add-playlist-section">
+        <form lang="pt" (submit)="addPlaylist()" class="row">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="name">Nome</label>
+                <input
+                  placeholder="Nome da Playlist"
+                  type="text"
+                  id="name"
+                  class="form-control"
+                  [(ngModel)]="newPlaylistReq.nome"
+                  name="name"
+                  required
+                />
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="description">Descrição</label>
+                <input
+                  placeholder="Descrição da Playlist"
+                  type="text"
+                  id="description"
+                  class="form-control"
+                  [(ngModel)]="newPlaylistReq.descricao"
+                  name="description"
+                  required
+                />
+              </div>
+            </div>
+            <div class="col-md-2">
+              <label for="selectedSongs">Músicas</label>
+              <div class="custom-dropdown">
+                <button type="button" (click)="toggleDropdown()">Selecionar Músicas</button>
+                <ul [class.show-dropdown]="showDropdown" [hidden]="!showDropdown" class="no-bullets">
+                  <li *ngFor="let musica of musicas">
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="musicas"
+                        [value]="musica.id"
+                        (change)="selectSong(musica)"
+                      />
+                      {{ musica.titulo }}
+                    </label>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="control-buttons">
+                <button type="submit" class="btn btn-primary">Adicionar</button>
+                <button type="button" class="btn btn-secondary" (click)="clearData()">Limpar</button>
+              </div>
+            </div>
+          </form>
+    </div>
+
+
+    <div *ngIf="informNameWarning" class="text-danger text-center">Informe os dados da playlist.</div>
+
+    <div *ngIf="!playlists || playlists.length === 0" class="empty-list">Novas playlists aparecerão aqui!</div>
+
+    <div *ngIf="playlists && playlists.length > 0" class="playlist-list">
+        <div class="row d-flex mb-5">
+            <div class="col-7">
+                <h2>Listagem de Playlists</h2>
+            </div>
+            <div class="col-5">
+                <div class="filter-buttons">
+                    <button class="btn btn-primary" (click)="toggleFilters()">
+                        {{ showFilters ? 'Esconder Filtros' : 'Mostrar Filtros' }}
+                    </button>
+                    <button class="btn btn-primary me-5" (click)="openSearchModal()">
+                        Pesquisa avançada
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter section -->
+        <div class="row mb-3 filter-section" *ngIf="showFilters">
+            <div class="col-sm-10">
+                <label class="me-2" for="nameFilter">Filtro por nome:</label>
+                <input name="nameFilter" type="text" id="nameFilter" [(ngModel)]="nameFilter" />
+            </div>
+            <div class="col-sm-2 text-end">
+                <button class="btn btn-warning" (click)="clearFilters()">Limpar filtros</button>
+            </div>
+        </div>
+
+        <table>
+            <tr>
+                <th>Nome</th>
+                <th>Descrição</th>
+                <th>Músicas</th>
+            </tr>
+        </table>
+        <table>
+            <tr *ngFor="let playlist of filteredPlaylists; let i = index">
+                <td class="playlist-item">
+                    <input type="text" [(ngModel)]="filteredPlaylists[i].nome" disabled />
+                </td>
+                <td class="playlist-item">
+                    <input type="text" [(ngModel)]="filteredPlaylists[i].descricao" disabled />
+                </td>
+                <td class="playlist-item">
+                    <select>
+                        <option value="" disabled selected hidden>Clique para ver as músicas</option>
+                        <option *ngFor="let musica of playlist.musicas" [value]="musica.id">
+                            {{ musica.titulo }}
+                        </option>
+                    </select>
+                </td>
+                <td class="playlist-item playlist-buttons">
+                    <button class="btn btn-danger" (click)="deletePlaylist(playlist)">Deletar</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<dialog #searchDialog>
+    <h2>Pesquisa avançada</h2>
+    <form (submit)="search()">
+        <div class="row">
+            <div class="form-group">
+                <label for="searchTitle">Nome</label>
+                <input type="text" id="searchTitle" class="form-control" [(ngModel)]="searchTitle" name="searchTitle" required>
+            </div>
+        </div>
+
+        <div *ngIf="!playlistNaoEncontrada" class="row mt-4">
+            <table>
+                <tr>
+                    <th>Nome</th>
+                    <th>Descrição</th>
+                    <th>Músicas</th>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <td class="playlist-item">
+                        <div class="input-like">{{ searchedPlaylist.nome }}</div>
+                    </td>
+                    <td class="playlist-item">
+                        <div class="input-like">{{ searchedPlaylist.descricao }}</div>
+                    </td>
+                    <td class="playlist-item">
+                        <select>
+                            <option value="" disabled selected hidden>Clique para ver as músicas</option>
+                            <option *ngFor="let musica of searchedPlaylist.musicas" [value]="musica.id">
+                                {{ musica.titulo }}
+                            </option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div *ngIf="playlistNaoEncontrada" class="mt-3 text-danger text-center not-found">Playlist não encontrada.</div>
+
+        <div class="mt-3 row search">
+            <div class="control-buttons col-20">
+                <button class="col btn btn-primary" type="submit">Pesquisar</button>
+                <button class="col btn btn-secondary" type="button" (click)="closeSearchModal()">Fechar</button>
+            </div>
+        </div>
+    </form>
+</dialog>

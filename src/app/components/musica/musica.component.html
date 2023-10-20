@@ -1,0 +1,161 @@
+<app-header></app-header>
+<div class="container">
+    <div class="add-musica-section">
+        <form lang="en" (submit)="addMusica()" class="row">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="titulo">Título</label>
+                    <input placeholder="Título da música" type="text" id="titulo" class="form-control"
+                         [(ngModel)]="newMusica.titulo" name="titulo" required>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="artista">Artista</label>
+                    <input placeholder="Nome do artista" type="text" id="artista" class="form-control"
+                         [(ngModel)]="newMusica.artista" name="artista" required>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="artista">Álbum</label>
+                    <input placeholder="Nome do álbum" type="text" id="album" class="form-control"
+                         [(ngModel)]="newMusica.album" name="album" required>
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="form-group">
+                    <label for="ano">Ano</label>
+                    <input type="text" id="ano" class="form-control" [(ngModel)]="newMusica.ano" name="ano" required>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="genero">Gênero</label>
+                    <input placeholder="Gênero musical" type="text" id="genero" class="form-control"
+                         [(ngModel)]="newMusica.genero" name="genero" required>
+                </div>
+            </div>
+            <div class="col-md-2 ms-5">
+                <div class="control-buttons">
+                    <button type="submit" class="btn btn-primary">Adicionar</button>
+                    <button type="button" class="btn btn-secondary" (click)="clearData()">Limpar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div *ngIf="informTitleWarning" class="text-danger missing-title">Informe os dados da música.</div>
+
+    <div *ngIf="!musicas || musicas.length === 0" class="empty-list">Novas músicas aparecerão aqui!</div>
+
+    <div *ngIf="musicas && musicas.length > 0" class="musica-list">
+        <div class="row d-flex mb-5">
+            <div class="col-7">
+                <h2>Listagem de Músicas</h2>
+            </div>
+            <div class="col-5">
+                <div class="filter-buttons">
+                    <button class="btn btn-primary" (click)="toggleFilters()">
+                        {{ showFilters ? 'Esconder Filtros' : 'Mostrar Filtros' }}
+                    </button>
+                    <button class="btn btn-primary me-5" (click)="openSearchModal()">
+                        Pesquisa avançada
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter section -->
+        <div class="row mb-3 filter-section" *ngIf="showFilters">
+            <div class="col-sm-10">
+                <label class="me-2" for="artistaFilter">Filtro por artista:</label>
+                <input type="text" id="artistaFilter" [(ngModel)]="artistaFilter" />
+            </div>
+            <div class="col-sm-2 text-end">
+                <button class="btn btn-warning" (click)="clearFilters()">Limpar filtro</button>
+            </div>
+        </div>
+        <table>
+            <tr>
+                <th>Título</th>
+                <th>Artista</th>
+                <th>Álbum</th>
+                <th>Ano</th>
+                <th>Gênero</th>
+            </tr>
+        </table>
+        <table>
+            <tr *ngFor="let musica of filteredArtistas; let i = index">
+                <td class="musica-item">
+                    <input type="text" [(ngModel)]="filteredArtistas[i].titulo" disabled />
+                </td>
+                <td class="musica-item">
+                    <input type="text" [(ngModel)]="filteredArtistas[i].artista" disabled />
+                </td>  
+                <td class="musica-item">
+                    <input type="text" [(ngModel)]="filteredArtistas[i].album" disabled />
+                </td>
+                <td class="musica-item">
+                    <input type="number" [(ngModel)]="filteredArtistas[i].ano" disabled />
+                </td>
+                <td class="musica-item">
+                    <input type="text" [(ngModel)]="filteredArtistas[i].genero" disabled />
+                </td>
+                <td class="musica-item musica-buttons">
+                    <button class="btn btn-danger" (click)="deleteMusica(musica)">Deletar</button>                    
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+<dialog #searchDialog>
+    <h2>Pesquisa avançada</h2>
+    <form (submit)="search()">
+        <div class="row mb-3">
+            <div class="form-group">
+                <label for="searchTitle">Título</label>
+                <input type="text" id="searchTitle" class="form-control" [(ngModel)]="searchTitle" name="searchTitle" required>
+            </div>
+        </div>
+        <div *ngIf="!musicaNaoEncontrada" class="row mt-4">
+            <table>
+                <tr>
+                    <th>Título</th>
+                    <th>Artista</th>
+                    <th>Álbum</th>
+                    <th>Ano</th>
+                    <th>Gênero</th>
+                </tr>
+                <tr>
+                    <td class="musica-item">
+                        <div class="input-like">{{ searchedMusica.titulo }}</div>
+                    </td>
+                    <td class="musica-item">
+                        <div class="input-like">{{ searchedMusica.artista }}</div>
+                    </td>
+                    <td class="musica-item">
+                        <div class="input-like">{{ searchedMusica.album }}</div>
+                    </td>
+                    <td class="musica-item">
+                        <div class="input-like">{{ searchedMusica.ano }}</div>
+                    </td>
+                    <td class="musica-item">
+                        <div class="input-like">{{ searchedMusica.genero }}</div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div *ngIf="musicaNaoEncontrada" class="mt-3 text-danger text-center not-found">Música não encontrada.</div>
+        
+        <div class="mt-4 row search">
+            <div class="control-buttons col-20">
+                <button class="col btn btn-primary" type="submit">Pesquisar</button>
+                <button class="col btn btn-secondary" type="button" (click)="closeSearchModal()">Fechar</button>
+            </div>
+        </div>
+    </form>
+</dialog>

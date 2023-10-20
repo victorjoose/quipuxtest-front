@@ -1,0 +1,26 @@
+.header {
+    background: #393263;
+    color: #fff;
+    text-align: center;
+    padding: 15px;
+    width: 100vw;
+  }
+  
+.header a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.auth {
+  cursor: pointer;
+}
+
+.green-check {
+  color: green;
+  margin-left: 5px;
+}
+
+.red-x {
+  color: red;
+  margin-left: 5px; 
+}

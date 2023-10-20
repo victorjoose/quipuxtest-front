@@ -1,0 +1,46 @@
+@import url("https://fonts.googleapis.com/css?family=Trirong");
+
+html {
+  height: 100vh;
+  width: 100vw;
+}
+
+* {
+  font-family: "Trirong", serif;
+}
+
+.btn-primary,
+.btn-primary:hover {
+  background: #393263;
+  border-color: #393263;
+}
+
+.container {
+  padding: 0 1rem;
+}
+
+.control-buttons {
+  margin-top: 25px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+.input-like {
+  padding: 20px;
+  background-color: #f9f9f9;
+  font-size: 16px;
+  width: 125px;
+}
+
+.input-like:hover {
+    border-color: #aaa;
+}
+
+.not-found { 
+  width: 800px;
+}

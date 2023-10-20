@@ -1,0 +1,45 @@
+<header class="header">
+    <h1>{{title}}</h1>
+    <nav> 
+        <a routerLink="/">Músicas </a>
+        <a routerLink="/playlists">| Playlists |</a>
+        <a href="javascript:void(0);" class="auth" (click)="openAuthenticationModal()"> Autenticação
+            <span *ngIf="authorized" class="green-check">✓</span>
+            <span *ngIf="!authorized" class="red-x">✗</span>
+        </a>
+        <a routerLink="/about"> | Sobre</a>
+    </nav>
+</header>
+
+
+<dialog #authenticationDialog>
+    <h2>Autenticação</h2>
+    <form (submit)="authenticate()">
+      <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="usuario">Usuário</label>
+                <input type="text" id="usuario" class="form-control"
+                     [(ngModel)]="usuario" name="usuario" required>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="senha">Senha</label>
+                <input type="password" id="senha" class="form-control"
+                     [(ngModel)]="senha" name="senha" required>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="authFailed" class="text-danger text-center mt-3">Autenticação falhou.</div>
+
+      <div class="mt-2 row">
+        <div class="control-buttons">
+            <button class="col btn btn-primary" type="submit">Entrar</button>
+            <button class="col btn btn-secondary" type="button" (click)="closeAuthenticationModal()">Fechar</button>
+        </div>
+      </div>
+    </form>
+</dialog>
+
